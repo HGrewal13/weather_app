@@ -7,10 +7,12 @@ const dataProcessing = (function() {
         
         const dataObj = {
             location: initialData.address,
+            conditions: initialData.currentConditions.conditions,
             description: initialData.description,
             temp: initialData.currentConditions.temp
         }
-
+        
+        
         // console.log(dataObj);
         return dataObj;
     }
@@ -20,6 +22,7 @@ const dataProcessing = (function() {
         
         const dataObj = {
             location: searchData.address,
+            conditions: searchData.currentConditions.conditions,
             description: searchData.description,
             temp: searchData.currentConditions.temp
         }

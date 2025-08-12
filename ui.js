@@ -6,26 +6,23 @@ const UI = (function() {
     let currentCity;
 
     const setInitialCity = async function() {
-        const cityName = document.querySelector(".cityName");
-        const cityDesc = document.querySelector(".cityDescription");
-        const cityTemp = document.querySelector(".cityTemp");
-
         currentCity = await dataProcessing.initialSearchProcessing();
-        cityName.textContent = currentCity.location;
-        cityDesc.textContent = currentCity.description;
-        cityTemp.textContent = currentCity.temp;
+        updateDom();
     }
 
     const setCurrentCity = async function(searchTerm) {
         currentCity = await dataProcessing.searchProcessing(searchTerm);
+        updateDom();
     }
 
     const updateDom = function() {
         const cityName = document.querySelector(".cityName");
+        const cityConditions = document.querySelector(".cityConditions");
         const cityDesc = document.querySelector(".cityDescription");
         const cityTemp = document.querySelector(".cityTemp");
 
         cityName.textContent = currentCity.location;
+        cityConditions.textContent = currentCity.conditions;
         cityDesc.textContent = currentCity.description;
         cityTemp.textContent = currentCity.temp;
     }
@@ -35,7 +32,6 @@ const UI = (function() {
         e.preventDefault();
         const searchTerm = searchForm.search.value;
         await setCurrentCity(searchTerm);
-        updateDom();
         console.log(currentCity);
     })
 

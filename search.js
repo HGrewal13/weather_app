@@ -16,6 +16,7 @@ const search = (function() {
         console.log(searchLocation);
         const response = await fetch(url + searchLocation + "?key=" + apiKey);
         const data = await response.json();
+        console.log(data);
         return data;
     }
 
