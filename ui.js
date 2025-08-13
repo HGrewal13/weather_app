@@ -2,40 +2,54 @@ import { search } from "./search.js";
 import { dataProcessing } from "./dataProcessing.js";
 
 const UI = (function() {
+    const testButton = document.querySelector(".testingButton");
     const searchForm = document.querySelector("#searchForm");
     let currentCity;
 
-    const setInitialCity = async function() {
-        currentCity = await dataProcessing.initialSearchProcessing();
-        updateDom();
-    }
+    // this could be an anonymous function?
+    const renderDays = async function(searchTerm) {
+        currentCity = await dataProcessing.multipleDays(searchTerm);
 
-    const setCurrentCity = async function(searchTerm) {
-        currentCity = await dataProcessing.searchProcessing(searchTerm);
-        updateDom();
-    }
+        const main = document.querySelector("main");
+        main.textContent = "";
 
-    const updateDom = function() {
-        const cityName = document.querySelector(".cityName");
-        const cityConditions = document.querySelector(".cityConditions");
-        const cityDesc = document.querySelector(".cityDescription");
-        const cityTemp = document.querySelector(".cityTemp");
+        const location = currentCity[0];
+        currentCity = currentCity.slice(1);
 
-        cityName.textContent = currentCity.location;
-        cityConditions.textContent = currentCity.conditions;
-        cityDesc.textContent = currentCity.description;
-        cityTemp.textContent = currentCity.temp;
+        currentCity.forEach(city => {
+            const cityData = document.createElement("div");
+            const cityName = document.createElement("h2");
+            const cityConditions = document.createElement("p");
+            const cityDesc = document.createElement("p");
+            const cityTemp = document.createElement("h3");
+
+            cityData.classList.add("cityData");
+            cityName.classList.add("cityName");
+            cityConditions.classList.add("cityConditions");
+            cityDesc.classList.add("cityDescription");
+            cityTemp.classList.add("cityTemp");
+
+            cityName.textContent = location;
+            cityConditions.textContent = city.conditions;
+            cityDesc.textContent = city.description;
+            cityTemp.textContent = city.temp;
+
+            cityData.appendChild(cityName);
+            cityData.appendChild(cityConditions);
+            cityData.appendChild(cityDesc);
+            cityData.appendChild(cityTemp);
+            main.appendChild(cityData);
+        });
     }
 
     // Event Listeners
     searchForm.addEventListener("submit", async e => {
         e.preventDefault();
         const searchTerm = searchForm.search.value;
-        await setCurrentCity(searchTerm);
-        console.log(currentCity);
+        await renderDays(searchTerm);
     })
 
-    setInitialCity();
+    renderDays("Windsor");
 }());
 
 export {UI};
